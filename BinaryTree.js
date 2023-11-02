@@ -9,6 +9,7 @@ class TNode {
 class Tree {
     constructor(arr) {
         arr = removeDuplicates(arr);
+        arr = mergeSort(arr);
         this.root = buildTree(arr, 0, arr.length -1);
 
     }
@@ -175,9 +176,8 @@ class Tree {
 }
 
 function buildTree(arr, start, end) {
-    arr = mergeSort(arr);
     //base case
-    if (start > end) return null;
+    if (start > end || start >= arr.length) return null;
 
     const mid = Math.floor((start + end) / 2);
     const root = new TNode(arr[mid])
