@@ -1,3 +1,26 @@
+window.onload = () => {
+    const binaryTree = new Tree(randomArray(100));
+
+    console.log('is the tree balanced? : ' + binaryTree.isBalance())
+    binaryTree.printInAllOrders();
+    
+    for (let i = 0; i < 20; i++) {
+        //insert a random number to the tree
+        randomInt = Math.floor(Math.random() * 1000)
+        console.log('inserting random number : ' + randomInt);
+        binaryTree.insert(randomInt);
+    }
+    
+    console.log('is the tree balanced? : ' + binaryTree.isBalance());
+    if (!binaryTree.isBalance()) {
+        console.log('rebalancing...')
+        binaryTree.rebalance();
+    }
+    
+    console.log('is the tree balanced? : ' + binaryTree.isBalance());
+    binaryTree.printInAllOrders();
+}
+
 class TNode {
     constructor(data) {
         this.data = data;
@@ -11,7 +34,25 @@ class Tree {
         arr = removeDuplicates(arr);
         arr = mergeSort(arr);
         this.root = buildTree(arr, 0, arr.length -1);
+    }
 
+    printInAllOrders() {
+        let levelOrderString = 'LevelOrder : ';
+        let preorderString = 'PreOrder: ';
+        let postorderString = 'PostOrder: ';
+        let inorderString = 'InOrder: ';
+
+        this.levelOrder(node => levelOrderString+= `${node.data}, `);
+        console.log(levelOrderString);
+
+        this.preorder(node => preorderString += `${node.data}, `);
+        console.log(preorderString);
+
+        this.postorder(node => postorderString += `${node.data}, `);
+        console.log(postorderString);
+
+        this.inorder(node => inorderString += `${node.data}, `);
+        console.log(inorderString);
     }
 
     insert(nodeToInsert, currentNode =this.root) {
@@ -78,8 +119,7 @@ class Tree {
         }
         
         if (key > currentNode.data) return this.find(key, currentNode.right);
-        if (key < currentNode.data) return this.find(key, currentNode.left);
-        
+        if (key < currentNode.data) return this.find(key, currentNode.left);   
     }
 
     levelOrder(callback = null) {
@@ -173,6 +213,7 @@ class Tree {
         const arr = this.inorder();
         this.root = buildTree(arr, 0, arr.length)
     }
+
 }
 
 function buildTree(arr, start, end) {
@@ -228,5 +269,13 @@ function prettyPrint (node, prefix = "", isLeft = true) {
     if (node.left !== null) {
       prettyPrint(node.left, `${prefix}${isLeft ? "    " : "│   "}`, true);
     }
-  }
-  
+}
+
+function randomArray(length) {
+    const arr = [];
+
+    for (let i=0; i < length; i++) {
+        arr.push(Math.floor(Math.random() * 100))
+    }
+    return arr;
+}
